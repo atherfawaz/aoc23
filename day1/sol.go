@@ -10,7 +10,7 @@ func isASCIIDigit(char byte) bool {
 	return char >= '0' && char <= '9'
 }
 
-func SolveDay1Q1() {
+func SolveDay1() {
 
 	file, err := os.Open("day1/input.txt")
 	if err != nil {
@@ -52,7 +52,7 @@ func SolveDay1Q1() {
 		}
 		// fmt.Printf("For the string %s, the first is %d, the last is %d, and the output is %d\n", line, first, last, total)
 	}
-	fmt.Printf("Final output: %d", total)
+	fmt.Printf("Answer to Day 1: %d\n", total)
 
 	if err := scanner.Err(); err != nil {
 		fmt.Println("Error reading file:", err)
