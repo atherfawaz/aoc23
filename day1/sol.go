@@ -50,7 +50,6 @@ func SolveDay1() {
 		} else {
 			total += first
 		}
-		// fmt.Printf("For the string %s, the first is %d, the last is %d, and the output is %d\n", line, first, last, total)
 	}
 	fmt.Printf("Answer to Day 1: %d\n", total)
 
