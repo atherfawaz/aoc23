@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 )
 
 func isASCIIDigit(char rune) bool {
@@ -30,16 +31,67 @@ func getSchematic() [][]rune {
 	return schematic
 }
 
+func isPartNumber(i int, height int, width int, k int, schematic [][]rune) bool {
+
+	checkTop := func() bool {
+		return i != 0 && !isASCIIDigit(schematic[i-1][k]) && schematic[i-1][k] != '.'
+	}
+
+	checkTopLeft := func() bool {
+		return i != 0 && k != 0 && !isASCIIDigit(schematic[i-1][k-1]) && schematic[i-1][k-1] != '.'
+	}
+
+	checkTopRight := func() bool {
+		return i != 0 && width-k > 1 && !isASCIIDigit(schematic[i-1][k+1]) && schematic[i-1][k+1] != '.'
+	}
+
+	checkBottomLeft := func() bool {
+		return k != 0 && height-i > 1 && !isASCIIDigit(schematic[i+1][k-1]) && schematic[i+1][k-1] != '.'
+	}
+
+	checkBottomRight := func() bool {
+		return k < width-1 && width-k > 1 && !isASCIIDigit(schematic[i+1][k+1]) && schematic[i+1][k+1] != '.'
+	}
+
+	checkBottom := func() bool {
+		return i < height-1 && !isASCIIDigit(schematic[i+1][k]) && schematic[i+1][k] != '.'
+	}
+
+	return checkTop() || checkTopLeft() || checkTopRight() || checkBottomLeft() || checkBottomRight() || checkBottom()
+}
+
 func SolveDay3() {
 	total := 0
 	schematic := getSchematic()
+	height := len(schematic)
+	width := len(schematic[0])
+
 	for i, row := range schematic {
 		for j, char := range row {
-			fmt.Printf("i: %d, j: %d, char: %c\n", i, j, char)
 			if isASCIIDigit(char) {
-
+				var charArr []rune
+				isPartNum := false
+				if j == 0 || (j > 1 && !isASCIIDigit(schematic[i][j-1])) {
+					for k := j; k < width && isASCIIDigit(schematic[i][k]); k++ {
+						charArr = append(charArr, schematic[i][k])
+						isPartNum = isPartNumber(i, height, width, k, schematic)
+					}
+				}
+				if len(charArr) == 0 {
+					continue
+				}
+				number, err := strconv.Atoi(string(charArr))
+				if err != nil {
+					fmt.Println("Error converting to int:", err)
+					continue
+				}
+				fmt.Printf("Number: %d, isPartNum: %v\n", number, isPartNum)
+				if isPartNum {
+					total += number
+				}
 			}
 		}
 	}
+
 	fmt.Printf("Answer to Day 3: %d\n", total)
 }
