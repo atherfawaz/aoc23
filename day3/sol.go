@@ -50,14 +50,22 @@ func isPartNumber(i int, height int, width int, k int, schematic [][]rune) bool 
 	}
 
 	checkBottomRight := func() bool {
-		return k < width-1 && width-k > 1 && !isASCIIDigit(schematic[i+1][k+1]) && schematic[i+1][k+1] != '.'
+		return width-k > 1 && height-i > 1 && !isASCIIDigit(schematic[i+1][k+1]) && schematic[i+1][k+1] != '.'
 	}
 
 	checkBottom := func() bool {
-		return i < height-1 && !isASCIIDigit(schematic[i+1][k]) && schematic[i+1][k] != '.'
+		return height-i > 1 && !isASCIIDigit(schematic[i+1][k]) && schematic[i+1][k] != '.'
 	}
 
-	return checkTop() || checkTopLeft() || checkTopRight() || checkBottomLeft() || checkBottomRight() || checkBottom()
+	checkLeft := func() bool {
+		return k != 0 && !isASCIIDigit(schematic[i][k-1]) && schematic[i][k-1] != '.'
+	}
+
+	checkRight := func() bool {
+		return width-k > 1 && !isASCIIDigit(schematic[i][k+1]) && schematic[i][k+1] != '.'
+	}
+
+	return checkTop() || checkTopLeft() || checkTopRight() || checkBottomLeft() || checkBottomRight() || checkBottom() || checkLeft() || checkRight()
 }
 
 func SolveDay3() {
