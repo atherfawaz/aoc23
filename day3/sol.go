@@ -95,7 +95,6 @@ func SolveDay3() {
 					fmt.Println("Error converting to int:", err)
 					continue
 				}
-				fmt.Printf("Number: %d, isPartNum: %v\n", number, isPartNum)
 				if isPartNum {
 					total += number
 				}
