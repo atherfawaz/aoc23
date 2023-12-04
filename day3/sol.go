@@ -79,10 +79,12 @@ func SolveDay3() {
 			if isASCIIDigit(char) {
 				var charArr []rune
 				isPartNum := false
-				if j == 0 || (j > 1 && !isASCIIDigit(schematic[i][j-1])) {
+				if j == 0 || (j > 0 && !isASCIIDigit(schematic[i][j-1])) {
 					for k := j; k < width && isASCIIDigit(schematic[i][k]); k++ {
 						charArr = append(charArr, schematic[i][k])
-						isPartNum = isPartNumber(i, height, width, k, schematic)
+						if !isPartNum {
+							isPartNum = isPartNumber(i, height, width, k, schematic)
+						}
 					}
 				}
 				if len(charArr) == 0 {
